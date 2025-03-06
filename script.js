@@ -34,7 +34,10 @@ function showCollections() {
 function getCollections() {
     const getJSON = localStorage.getItem('collections');
     if (getJSON){
-        const collections = JSON.parse(getJSON);
+        let collections = JSON.parse(getJSON);
+        if (collections == undefined) {
+            collections = [];
+        }
         return collections;
     }
 }
