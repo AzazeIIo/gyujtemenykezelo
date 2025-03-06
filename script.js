@@ -17,13 +17,13 @@ window.onload = function() {
     
     document.getElementById("collections").ondblclick = function(e) {
         if(e.target && e.target.nodeName == "LI") {
-            let original = e.target.innerText;            
+            let original = e.target.innerText;
             let input = document.createElement("input");
             input.value = original;
             input.onkeydown = function(ev){
                 if(ev.key === 'Enter') {
                     let collections = getCollections();
-                    collections[e.target.id] = input.value;                    
+                    collections[e.target.id] = input.value;
                     setCollections(collections);
                     showCollections();
                 }
@@ -101,8 +101,11 @@ function showElements() {
     const elementGrid = document.getElementById("elements");
     elementGrid.innerHTML = "";
     let currentRow;
-console.log(activeCollection.id);
-
+    if(elements[activeCollection.id].length == 0) {
+        currentRow = document.createElement("div");
+            currentRow.className = "row";
+            elementGrid.appendChild(currentRow);
+    }
     elements[activeCollection.id].forEach((element, index) => {
         if(index % 4 == 0) {
             currentRow = document.createElement("div");
@@ -114,6 +117,28 @@ console.log(activeCollection.id);
         currentElem.innerText = element.name;
         currentRow.appendChild(currentElem);
     });
+    let newElementBtn = document.createElement("div");
+    newElementBtn.className = "col-3";
+    currentRow.appendChild(newElementBtn);
+    let newElementImg = document.createElement("img");
+    newElementImg.src = "images/plus.png";
+    newElementBtn.onclick = function(e) {
+        let input = document.createElement("input");
+        input.id = "elementName";
+        input.onkeydown = function(ev){
+            if(ev.key === 'Enter') {                
+                let elements = getElements();
+                elements[activeCollection.id].push({"name":input.value});
+                setElements(elements);
+                showElements();
+            }
+        }
+        newElementBtn.innerHTML = "";
+        newElementBtn.appendChild(input);
+        input.focus();
+    }
+    newElementBtn.appendChild(newElementImg);
+
 }
 
 function getElements() {
