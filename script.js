@@ -46,10 +46,15 @@ newBtn.onclick = function() {
     const submitBtn = document.getElementById("confirm");
     submitBtn.onclick = function() {
         const titleValue = document.getElementById("title").value;
-        const collections = getCollections();
+        const topicValue = document.getElementById("topic").value;
+        const dateValue = document.getElementById("date").value;
+        let collections = getCollections();
+        let elements = getElements();
         newCollection.innerHTML = "";
-        collections.push(titleValue);
+        collections.push({titleValue, topicValue, dateValue});
+        elements.push([]);
         setCollections(collections);
+        setElements(elements);
         showCollections();
     }
 }
@@ -63,7 +68,7 @@ function showCollections() {
     collections.forEach((collection, index) => {
         collectionList.insertAdjacentHTML("beforeEnd",
             `<li id="${index}" class="list-group-item list-group-item-action dropdown">
-                ${collection}
+                ${collection.titleValue}
                 <img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="${index}edit" style="float:right">
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Átnevezés</a></li>
@@ -88,5 +93,23 @@ function getCollections() {
 
 function setCollections(collections) {
     const sendJSON = JSON.stringify(collections);
-    localStorage.setItem('collections', sendJSON);    
+    localStorage.setItem('collections', sendJSON);
+}
+
+function getElements() {
+    const getJSON = localStorage.getItem('elements');
+    if (getJSON){
+        let elements = JSON.parse(getJSON);
+        if (elements == undefined) {
+            return [];
+        }
+        return elements;
+    } else {
+        return [];
+    }
+}
+
+function setElements(elements) {
+    const sendJSON = JSON.stringify(elements);
+    localStorage.setItem('elements', sendJSON);
 }
