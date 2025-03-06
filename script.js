@@ -11,6 +11,7 @@ window.onload = function() {
             }
             activeCollection = e.target;
             activeCollection.classList.toggle("active");
+            showElements();
         }
     }
     
@@ -63,7 +64,6 @@ function showCollections() {
     const collections = getCollections();
     const collectionList = document.getElementById("collections");
     collectionList.innerHTML = "";
-    console.log(collections);
 
     collections.forEach((collection, index) => {
         collectionList.insertAdjacentHTML("beforeEnd",
@@ -94,6 +94,26 @@ function getCollections() {
 function setCollections(collections) {
     const sendJSON = JSON.stringify(collections);
     localStorage.setItem('collections', sendJSON);
+}
+
+function showElements() {
+    const elements = getElements();
+    const elementGrid = document.getElementById("elements");
+    elementGrid.innerHTML = "";
+    let currentRow;
+console.log(activeCollection.id);
+
+    elements[activeCollection.id].forEach((element, index) => {
+        if(index % 4 == 0) {
+            currentRow = document.createElement("div");
+            currentRow.className = "row";
+            elementGrid.appendChild(currentRow);
+        }
+        let currentElem = document.createElement("div");
+        currentElem.className = "col-3";
+        currentElem.innerText = element.name;
+        currentRow.appendChild(currentElem);
+    });
 }
 
 function getElements() {
