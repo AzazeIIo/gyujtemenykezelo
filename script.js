@@ -16,21 +16,21 @@ window.onload = function() {
     
     document.getElementById("collections").ondblclick = function(e) {
         if(e.target && e.target.nodeName == "LI") {
-            let original = e.target.innerHTML;
+            let original = e.target.innerText;            
             let input = document.createElement("input");
             input.value = original;
             input.onkeydown = function(ev){
                 if(ev.key === 'Enter') {
-                    e.target.innerHTML = input.value;
                     let collections = getCollections();
                     collections[e.target.id] = input.value;                    
                     setCollections(collections);
+                    showCollections();
                 }
             }
             /*input.onblur = function(){
-                e.target.innerHTML = original;
+                e.target.innerText = original;
             }*/
-            e.target.innerHTML = "";
+            e.target.innerText = "";
             e.target.appendChild(input);
             input.focus();
         }
@@ -61,7 +61,15 @@ function showCollections() {
     console.log(collections);
 
     collections.forEach((collection, index) => {
-        collectionList.insertAdjacentHTML("beforeEnd", `<li id="${index}" class="list-group-item list-group-item-action">${collection}</li>`);
+        collectionList.insertAdjacentHTML("beforeEnd",
+            `<li id="${index}" class="list-group-item list-group-item-action dropdown">
+                ${collection}
+                <img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="${index}edit" style="float:right">
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Átnevezés</a></li>
+                    <li><a class="dropdown-item" href="#">Törlés</a></li>
+                </ul>
+            </li>`);
     });
 }
 
