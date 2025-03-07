@@ -54,8 +54,20 @@ export function addElement(collection, name) {
     showElements(collection);
 }
 
+export function removeElements(collection) {
+    let elements = getElements();
+    elements.splice(collection, 1);
+    setElements(elements);
+    clearElements();
+}
+
 export function editElementName(index, name) {
 
+}
+
+function clearElements() {
+    const elementGrid = document.getElementById("elements");
+    elementGrid.innerHTML = "";
 }
 
 function getElements() {

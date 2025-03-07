@@ -22,14 +22,19 @@ export function showCollections() {
                     document.getElementById(e.target.id).insertAdjacentHTML("beforeEnd",
                         `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
                         <ul id="dropdown" class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Átnevezés</a></li>
-                            <li><a class="dropdown-item" href="#">Törlés</a></li>
+                            <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
+                            <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
                         </ul>`);
+                    document.getElementById("rename").onclick = function() {
+                    };
+                    document.getElementById("remove").onclick = function() {
+                        removeCollection(e.target.id);
+                    }
                 }
             }
         },
         'mouseleave':function(e) {
-            if(e.target && e.target.nodeName == "LI") {
+            if(e.target && e.target.nodeName == "LI" && document.getElementById("gear") != undefined) {
                 document.getElementById("gear").remove();
                 document.getElementById("dropdown").remove();
             }
@@ -44,6 +49,14 @@ export function addCollection(title, topic, date) {
     setCollections(collections);
     elements.newElements();
     showCollections();
+}
+
+export function removeCollection(index) {
+    let collections = getCollections();
+    collections.splice(index, 1);
+    setCollections(collections);
+    showCollections();
+    elements.removeElements(index);
 }
 
 export function editCollectionTitle(index, title) {

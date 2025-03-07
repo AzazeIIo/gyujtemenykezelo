@@ -28,9 +28,9 @@ window.onload = function() {
                     collections.editCollectionTitle(e.target.id, input.value);
                 }
             }
-            /*input.onblur = function(){
+            input.onblur = function(){
                 collections.showCollections();
-            }*/
+            }
             e.target.innerText = "";
             e.target.appendChild(input);
             input.focus();
