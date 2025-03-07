@@ -47,8 +47,8 @@ export function showElements(collection) {
                                 <li><a class="dropdown-item" id="move" href="#">Áthelyezés</a></li>
                                 <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
                             </ul>`);
-                        document.getElementById("rename").onclick = function() {
-                            
+                        document.getElementById("rename").onclick = function(e) {
+                            edit(collection, e.target.parentElement.parentElement.parentElement);
                         };
                         document.getElementById("move").onclick = function() {
 
@@ -109,8 +109,49 @@ export function removeElements(collection) {
     clearElements();
 }
 
-export function editElementName(index, name) {
+export function edit(collection, target) {
+    if(target) {
+        let index = Number(target.id.slice(4));
+        
+        let original = getElementName(collection, index);
+        let input = document.createElement("input");
+        input.value = original;
+        input.onkeydown = function(ev){
+            if(ev.key === 'Enter') {
+                renameElement(collection, index, input.value);
+            }
+        }
+        input.onblur = function(e){
+            if(e.relatedTarget == null || e.relatedTarget.id != "renameInput") {
+                showElements(collection);
+            }
+        }
+        target.innerText = "";
+        target.appendChild(input);
+        input.focus();
+        let submit = document.createElement("button");
+        submit.type = "button";
+        submit.className = "btn btn-secondary";
+        submit.innerText = "Mentés";
+        submit.id = "renameInput";
+        submit.onclick = function() {
+            renameElement(collection, index, input.value);
+            showElements(collection);
+        }
+        target.appendChild(submit);
+    }
+}
 
+function renameElement(collection, index, name) {
+    let elements = getElements();
+    elements[collection.id][index].name = name;
+    setElements(elements);
+    showElements(collection);
+}
+
+function getElementName(collection, index) {
+    let elements = getElements();    
+    return elements[collection.id][index].name;
 }
 
 function removeElement(collection, index) {

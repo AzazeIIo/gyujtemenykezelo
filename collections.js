@@ -50,7 +50,7 @@ export function edit(target) {
         input.value = original;
         input.onkeydown = function(ev){
             if(ev.key === 'Enter') {
-                editCollectionTitle(target.id, input.value);
+                renameCollection(target.id, input.value);
             }
         }
         input.onblur = function(e){
@@ -67,7 +67,7 @@ export function edit(target) {
         submit.innerText = "Mentés";
         submit.id = "renameInput";
         submit.onclick = function() {
-            editCollectionTitle(target.id, input.value);
+            renameCollection(target.id, input.value);
             showCollections();
         }
         target.appendChild(submit);
@@ -91,7 +91,7 @@ export function removeCollection(index) {
     elements.removeElements(index);
 }
 
-export function editCollectionTitle(index, title) {
+export function renameCollection(index, title) {
     let collections = getCollections();
     collections[index].title = title;
     setCollections(collections);
