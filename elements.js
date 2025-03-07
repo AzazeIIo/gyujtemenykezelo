@@ -44,13 +44,17 @@ export function showElements(collection) {
                             `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
                             <ul id="dropdown" class="dropdown-menu" aria-labelledby="gear">
                                 <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
+                                <li><a class="dropdown-item" id="move" href="#">Áthelyezés</a></li>
                                 <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
                             </ul>`);
                         document.getElementById("rename").onclick = function() {
                             
                         };
+                        document.getElementById("move").onclick = function() {
+
+                        }
                         document.getElementById("remove").onclick = function() {
-                            
+                            removeElement(collection, index);
                         }
                     }
                 }
@@ -107,6 +111,13 @@ export function removeElements(collection) {
 
 export function editElementName(index, name) {
 
+}
+
+function removeElement(collection, index) {
+    let elements = getElements();
+    elements[collection.id].splice(index, 1);
+    setElements(elements);
+    showElements(collection);
 }
 
 function clearElements() {
