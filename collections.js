@@ -9,12 +9,31 @@ export function showCollections() {
         collectionList.insertAdjacentHTML("beforeEnd",
             `<li id="${index}" class="list-group-item list-group-item-action dropdown">
                 ${collection.title}
-                <img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="${index}edit" style="float:right">
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Átnevezés</a></li>
-                    <li><a class="dropdown-item" href="#">Törlés</a></li>
-                </ul>
             </li>`);
+    });
+    $(collectionList).on({
+        'mouseover':function(e) {
+            if(e.target && e.target.nodeName == "LI") {                
+                if(document.getElementById("gear") != undefined && e.relatedTarget != document.getElementById("gear")) {
+                    document.getElementById("gear").remove();
+                    document.getElementById("dropdown").remove();
+                }
+                if(e.relatedTarget != document.getElementById("gear")){
+                    document.getElementById(e.target.id).insertAdjacentHTML("beforeEnd",
+                        `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
+                        <ul id="dropdown" class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Átnevezés</a></li>
+                            <li><a class="dropdown-item" href="#">Törlés</a></li>
+                        </ul>`);
+                }
+            }
+        },
+        'mouseleave':function(e) {
+            if(e.target && e.target.nodeName == "LI") {
+                document.getElementById("gear").remove();
+                document.getElementById("dropdown").remove();
+            }
+        }
     });
 }
 
