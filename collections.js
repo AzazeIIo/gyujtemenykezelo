@@ -26,6 +26,7 @@ export function showCollections() {
                             <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
                         </ul>`);
                     document.getElementById("rename").onclick = function() {
+                        edit(e.target);
                     };
                     document.getElementById("remove").onclick = function() {
                         removeCollection(e.target.id);
@@ -40,6 +41,30 @@ export function showCollections() {
             }
         }
     });
+}
+
+export function edit(target) {
+    if(target && target.nodeName == "LI") {
+        let original = getCollectionTitle(target.id);
+        let input = document.createElement("input");
+        input.value = original;
+        input.onkeydown = function(ev){
+            if(ev.key === 'Enter') {
+                editCollectionTitle(target.id, input.value);
+            }
+        }
+        input.onblur = function(){
+            showCollections();
+        }
+        target.innerText = "";
+        target.appendChild(input);
+        input.focus();
+        let submit = document.createElement("button");
+        submit.type = "button";
+        submit.className = "btn btn-secondary";
+        submit.innerText = "Mentés";
+        target.appendChild(submit);
+    }
 }
 
 export function addCollection(title, topic, date) {
@@ -64,6 +89,11 @@ export function editCollectionTitle(index, title) {
     collections[index].title = title;
     setCollections(collections);
     showCollections();
+}
+
+function getCollectionTitle(index) {
+    let collections = getCollections();
+    return collections[index].title;
 }
 
 function getCollections() {

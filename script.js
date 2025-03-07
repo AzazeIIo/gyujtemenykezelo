@@ -19,22 +19,7 @@ window.onload = function() {
     }
     
     document.getElementById("collections").ondblclick = function(e) {
-        if(e.target && e.target.nodeName == "LI") {
-            let original = e.target.innerText;
-            let input = document.createElement("input");
-            input.value = original;
-            input.onkeydown = function(ev){
-                if(ev.key === 'Enter') {
-                    collections.editCollectionTitle(e.target.id, input.value);
-                }
-            }
-            input.onblur = function(){
-                collections.showCollections();
-            }
-            e.target.innerText = "";
-            e.target.appendChild(input);
-            input.focus();
-        }
+        collections.edit(e.target);
     }
 }
 
