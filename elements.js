@@ -17,7 +17,51 @@ export function showElements(collection) {
         }
         let currentElem = document.createElement("div");
         currentElem.className = "col-3";
-        currentElem.innerText = element.name;
+        let card = document.createElement("div");
+        card.id = `elem${index}`;
+        card.className = "card dropdown";
+        let cardImage = document.createElement("img");
+        cardImage.className = "card-img-top";
+        cardImage.src = "/images/photomissing.png";
+        card.appendChild(cardImage);
+        let cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+        let cardText = document.createElement("p");
+        cardText.className = "card-text";
+        cardText.innerText = element.name;
+        cardBody.appendChild(cardText);
+        card.appendChild(cardBody);
+        currentElem.appendChild(card);
+        $(card).on({
+            'mouseover':function(e) {
+                if(e.target && e.target.classList.contains("card")) {
+                    if(document.getElementById("gear") != undefined && e.relatedTarget != document.getElementById("gear")) {
+                        document.getElementById("gear").remove();
+                        document.getElementById("dropdown").remove();
+                    }
+                    if(e.relatedTarget != document.getElementById("gear")){
+                        document.getElementById(`elem${index}`).insertAdjacentHTML("beforeEnd",
+                            `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
+                            <ul id="dropdown" class="dropdown-menu" aria-labelledby="gear">
+                                <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
+                                <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
+                            </ul>`);
+                        document.getElementById("rename").onclick = function() {
+                            
+                        };
+                        document.getElementById("remove").onclick = function() {
+                            
+                        }
+                    }
+                }
+            },
+            'mouseleave':function(e) {
+                /*if(document.getElementById("gear") != undefined) {
+                    document.getElementById("gear").remove();
+                    document.getElementById("dropdown").remove();
+                }*/
+            }
+        });
         currentRow.appendChild(currentElem);
     });
     let newElementBtn = document.createElement("div");

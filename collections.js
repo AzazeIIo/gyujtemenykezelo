@@ -36,7 +36,7 @@ export function showCollections() {
         },
         'mouseleave':function(e) {
             if(e.target && e.target.nodeName == "LI" && document.getElementById("gear") != undefined) {
-                document.getElementById("gear").remove();
+               document.getElementById("gear").remove();
                 document.getElementById("dropdown").remove();
             }
         }
