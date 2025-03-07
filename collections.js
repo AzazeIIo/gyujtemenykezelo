@@ -53,8 +53,10 @@ export function edit(target) {
                 editCollectionTitle(target.id, input.value);
             }
         }
-        input.onblur = function(){
-            showCollections();
+        input.onblur = function(e){
+            if(e.relatedTarget == null || e.relatedTarget.id != "renameInput") {
+                showCollections();
+            }
         }
         target.innerText = "";
         target.appendChild(input);
@@ -63,6 +65,11 @@ export function edit(target) {
         submit.type = "button";
         submit.className = "btn btn-secondary";
         submit.innerText = "Mentés";
+        submit.id = "renameInput";
+        submit.onclick = function() {
+            editCollectionTitle(target.id, input.value);
+            showCollections();
+        }
         target.appendChild(submit);
     }
 }
