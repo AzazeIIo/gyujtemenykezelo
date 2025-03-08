@@ -9,21 +9,33 @@
 </head>
 <body>
     <div class="container">
-        <div class="row text-center">
+        <div class="row text-center mt-5">
             <h1 class="bd-title">Gyűjteménykezelő</h1>
         </div>
         <div class="row">
-            <div class="col text-center">
-                <button id="newBtn" class="btn btn-default">Új gyűjtemény létrehozása</button>
-                <div class="text-left" id="newCollection"></div>
+            <div class="col-3">
+                <div class="col text-center">
+                    <button id="newBtn" class="btn btn-default mb-3">Új gyűjtemény</button>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-3">
-                <ul id="collections" class="list-group"></ul>
+                <div class="text-center mb-3" id="newCollection">
+                    <img src="images/close.png" alt="Mégsem" id="closeBtn" style="float:right">
+                    <label for="title">Cím: </label>
+                    <input type="text" id="title" name="title" required><br>
+                    <label for="topic">Témakör: </label>
+                    <input type="text" id="topic" name="topic" required><br>
+                    <label for="date">Dátum: </label>
+                    <input type="date" id="date" name="date" required><br>
+                    <button class="btn btn-default" type="submit" id="confirmBtn" name="confirmBtn">Létrehozás</button>
+                </div>
+                <div>
+                    <ul id="collections" class="list-group"></ul>
+                </div>
             </div>
-            <div id="elements" class="col-9">
-            </div>
+            <div id="elements" class="col-9"></div>
         </div>
     </div>
     <script src="script.js" type="module"></script>

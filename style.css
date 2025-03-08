@@ -5,3 +5,11 @@
 #gear {
     width: 16px;
 }
+
+#newCollection {
+    display: none;
+}
+
+input {
+    width: 100%;
+}
