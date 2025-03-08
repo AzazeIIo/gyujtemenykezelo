@@ -5,12 +5,46 @@ const newBtn = document.getElementById("newBtn");
 const newCollection = document.getElementById("newCollection");
 const confirmBtn = document.getElementById("confirmBtn");
 const closeBtn = document.getElementById("closeBtn");
-const collectionList = document.getElementById("collections");
+const collectionList = document.getElementById("collectionList");
+const elementGrid = document.getElementById("elementGrid");
+
 let activeCollection;
 
 window.onload = function() {
     showCollections();
 }
+
+$(collectionList).on({
+    'mouseover':function(e) {
+        if(e.target && e.target.nodeName == "LI") {                
+            if(document.getElementById("gear") != undefined && e.relatedTarget != document.getElementById("gear")) {
+                document.getElementById("gear").remove();
+                document.getElementById("dropdown").remove();
+            }
+            if(e.relatedTarget != document.getElementById("gear")){
+                document.getElementById(e.target.id).insertAdjacentHTML("beforeEnd",
+                    `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
+                    <ul id="dropdown" class="dropdown-menu">
+                        <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
+                        <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
+                    </ul>`);
+                document.getElementById("rename").onclick = function() {
+                    editCollection(e.target);
+                };
+                document.getElementById("remove").onclick = function() {
+                    collections.removeCollection(e.target.id);
+                    showCollections();
+                }
+            }
+        }
+    },
+    'mouseleave':function(e) {
+        if(e.target && e.target.nodeName == "LI" && document.getElementById("gear") != undefined) {
+           document.getElementById("gear").remove();
+            document.getElementById("dropdown").remove();
+        }
+    }
+});
 
 collectionList.onclick = function(e) {
     if(e.target && e.target.nodeName == "LI") {
@@ -24,7 +58,9 @@ collectionList.onclick = function(e) {
 }
 
 collectionList.ondblclick = function(e) {
-    editCollection(e.target);
+    if(e.target && e.target.nodeName == "LI") {
+        editCollection(e.target);
+    }
 }
 
 newBtn.onclick = function() {
@@ -46,60 +82,27 @@ closeBtn.onclick = function() {
 
 function showCollections() {
     const collectionArray = collections.getCollections();
-    const collectionList = document.getElementById("collections");
     collectionList.innerHTML = "";
-
     collectionArray.forEach((collection, index) => {
-        collectionList.insertAdjacentHTML("beforeEnd",
-            `<li id="${index}" class="list-group-item list-group-item-action dropdown">
-                ${collection.title}
-            </li>`);
-    });
-    $(collectionList).on({
-        'mouseover':function(e) {
-            if(e.target && e.target.nodeName == "LI") {                
-                if(document.getElementById("gear") != undefined && e.relatedTarget != document.getElementById("gear")) {
-                    document.getElementById("gear").remove();
-                    document.getElementById("dropdown").remove();
-                }
-                if(e.relatedTarget != document.getElementById("gear")){
-                    document.getElementById(e.target.id).insertAdjacentHTML("beforeEnd",
-                        `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
-                        <ul id="dropdown" class="dropdown-menu">
-                            <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
-                            <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
-                        </ul>`);
-                    document.getElementById("rename").onclick = function() {
-                        editCollection(e.target);
-                    };
-                    document.getElementById("remove").onclick = function() {
-                        collections.removeCollection(e.target.id);
-                        showCollections();
-                    }
-                }
-            }
-        },
-        'mouseleave':function(e) {
-            if(e.target && e.target.nodeName == "LI" && document.getElementById("gear") != undefined) {
-               document.getElementById("gear").remove();
-                document.getElementById("dropdown").remove();
-            }
-        }
+        const item = document.createElement("li");
+        item.id = index;
+        item.className = "list-group-item list-group-item-action dropdown";
+        item.innerHTML = collection.title;
+        collectionList.appendChild(item);
     });
 }
 
 function showElements(collection) {
-    const elems = elements.getElements();
-    const elementGrid = document.getElementById("elements");
-    elementGrid.innerHTML = "";
+    const elementArray = elements.getElements();
     let currentRow;
-    
-    if(elems[collection.id].length == 0) {
+
+    elementGrid.innerHTML = "";
+    if(elementArray[collection.id].length == 0) {
         currentRow = document.createElement("div");
         currentRow.className = "row";
         elementGrid.appendChild(currentRow);
     }
-    elems[collection.id].forEach((element, index) => {
+    elementArray[collection.id].forEach((element, index) => {
         if(index % 4 == 0) {
             currentRow = document.createElement("div");
             currentRow.className = "row";
@@ -122,41 +125,7 @@ function showElements(collection) {
         cardBody.appendChild(cardText);
         card.appendChild(cardBody);
         currentElem.appendChild(card);
-        $(card).on({
-            'mouseover':function(e) {
-                if(e.target && e.target.classList.contains("card")) {
-                    if(document.getElementById("gear") != undefined && e.relatedTarget != document.getElementById("gear")) {
-                        document.getElementById("gear").remove();
-                        document.getElementById("dropdown").remove();
-                    }
-                    if(e.relatedTarget != document.getElementById("gear")){
-                        document.getElementById(`elem${index}`).insertAdjacentHTML("beforeEnd",
-                            `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
-                            <ul id="dropdown" class="dropdown-menu" aria-labelledby="gear">
-                                <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
-                                <li><a class="dropdown-item" id="move" href="#">Áthelyezés</a></li>
-                                <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
-                            </ul>`);
-                        document.getElementById("rename").onclick = function(e) {
-                            editElement(collection, e.target.parentElement.parentElement.parentElement);
-                        };
-                        document.getElementById("move").onclick = function() {
-
-                        }
-                        document.getElementById("remove").onclick = function() {
-                            elements.removeElement(collection, index);
-                            showElements(collection);
-                        }
-                    }
-                }
-            },
-            'mouseleave':function(e) {
-                /*if(document.getElementById("gear") != undefined) {
-                    document.getElementById("gear").remove();
-                    document.getElementById("dropdown").remove();
-                }*/
-            }
-        });
+        
         currentRow.appendChild(currentElem);
     });
     let newElementBtn = document.createElement("div");
@@ -178,6 +147,45 @@ function showElements(collection) {
         input.focus();
     }
     newElementBtn.appendChild(newElementImg);
+
+    $(".card").on({
+        'mouseover':function(e) {
+            console.log("tesztelek");
+            
+            if(e.target && e.target.classList.contains("card")) {
+                if(document.getElementById("gear") != undefined && e.relatedTarget != document.getElementById("gear")) {
+                    document.getElementById("gear").remove();
+                    document.getElementById("dropdown").remove();
+                }
+                if(e.relatedTarget != document.getElementById("gear")){
+                    this.insertAdjacentHTML("beforeEnd",
+                        `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
+                        <ul id="dropdown" class="dropdown-menu" aria-labelledby="gear">
+                            <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
+                            <li><a class="dropdown-item" id="move" href="#">Áthelyezés</a></li>
+                            <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
+                        </ul>`);
+                    document.getElementById("rename").onclick = function(e) {
+                        editElement(collection, e.target.parentElement.parentElement.parentElement);
+                    };
+                    document.getElementById("move").onclick = function() {
+    
+                    }
+                    document.getElementById("remove").onclick = function() {
+                        let index = Number(e.target.id.slice(4));
+                        elements.removeElement(collection, index);
+                        showElements(collection);
+                    }
+                }
+            }
+        },
+        'mouseleave':function(e) {
+            /*if(document.getElementById("gear") != undefined) {
+                document.getElementById("gear").remove();
+                document.getElementById("dropdown").remove();
+            }*/
+        }
+    });
 }
 
 function editElement(collection, target) {
@@ -207,7 +215,7 @@ function editElement(collection, target) {
         submit.innerText = "Mentés";
         submit.id = "renameInput";
         submit.onclick = function() {
-            renameElement(collection, index, input.value);
+            elements.renameElement(collection, index, input.value);
             showElements(collection);
         }
         target.appendChild(submit);
@@ -215,33 +223,31 @@ function editElement(collection, target) {
 }
 
 function editCollection(target) {
-    if(target && target.nodeName == "LI") {
-        let original = collections.getCollectionTitle(target.id);
-        let input = document.createElement("input");
-        input.value = original;
-        input.onkeydown = function(ev){
-            if(ev.key === 'Enter') {
-                collections.renameCollection(target.id, input.value);
-                showCollections();
-            }
-        }
-        input.onblur = function(e){
-            if(e.relatedTarget == null || e.relatedTarget.id != "renameInput") {
-                showCollections();
-            }
-        }
-        target.innerText = "";
-        target.appendChild(input);
-        input.focus();
-        let submit = document.createElement("button");
-        submit.type = "button";
-        submit.className = "btn btn-secondary";
-        submit.innerText = "Mentés";
-        submit.id = "renameInput";
-        submit.onclick = function() {
+    let original = collections.getCollectionTitle(target.id);
+    let input = document.createElement("input");
+    input.value = original;
+    input.onkeydown = function(ev){
+        if(ev.key === 'Enter') {
             collections.renameCollection(target.id, input.value);
             showCollections();
         }
-        target.appendChild(submit);
     }
+    input.onblur = function(e){
+        if(e.relatedTarget == null || e.relatedTarget.id != "renameInput") {
+            showCollections();
+        }
+    }
+    target.innerText = "";
+    target.appendChild(input);
+    input.focus();
+    let submit = document.createElement("button");
+    submit.type = "button";
+    submit.className = "btn btn-secondary";
+    submit.innerText = "Mentés";
+    submit.id = "renameInput";
+    submit.onclick = function() {
+        collections.renameCollection(target.id, input.value);
+        showCollections();
+    }
+    target.appendChild(submit);
 }
