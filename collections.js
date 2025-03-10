@@ -25,6 +25,16 @@ export function getCollectionTitle(index) {
     return collections[index].title;
 }
 
+export function getCollectionTopic(index) {
+    const collections = getCollections();
+    return collections[index].topic;
+}
+
+export function getCollectionDate(index) {
+    const collections = getCollections();
+    return collections[index].date;
+}
+
 export function getCollections() {
     const getJSON = localStorage.getItem('collections');
     if (getJSON){

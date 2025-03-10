@@ -49,6 +49,14 @@ function showCollections() {
         cardTitle.className = "card-title";
         cardTitle.innerText = collection.title;
         cardImgOverlay.appendChild(cardTitle);
+        let cardText = document.createElement("p");
+        cardText.className = "card-text";
+        cardText.innerText = collections.getCollectionTopic(index);
+        cardImgOverlay.appendChild(cardText);
+        let cardDate = document.createElement("p");
+        cardDate.className = "card-text";
+        cardDate.innerText = collections.getCollectionDate(index);
+        cardImgOverlay.appendChild(cardDate);
         card.appendChild(cardImgOverlay);
         currentCollection.appendChild(card);
         currentRow.appendChild(currentCollection);
@@ -57,7 +65,7 @@ function showCollections() {
             const target = e.target;            
             if(target && target.classList.contains("card")) {
                 if(e.relatedTarget != document.getElementById("gear")){
-                    this.lastElementChild.lastElementChild.insertAdjacentHTML("beforeEnd",
+                    this.lastElementChild.firstElementChild.insertAdjacentHTML("beforeEnd",
                     `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right; float:top">
                     <ul id="dropdown" class="dropdown-menu" aria-labelledby="gear">
                         <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
