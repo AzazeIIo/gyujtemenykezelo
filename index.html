@@ -8,34 +8,40 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="row text-center mt-5">
-            <h1 class="bd-title">Gyűjteménykezelő</h1>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="col text-center">
-                    <button id="newBtn" class="btn btn-default mb-3">Új gyűjtemény</button>
-                </div>
+    <div class="text-center m-5">
+        <h1>Gyűjteménykezelő</h1>
+    </div>
+    <div class="container" id="collectionGrid"></div>
+    <div class="container" id="elementContainer">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <img src="images/back.png" alt="Vissza" id="back">
+                <h2 id="collectionTitle" class="mb-3"></h2>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="text-center mb-3" id="newCollection">
-                    <img src="images/close.png" alt="Mégsem" id="closeBtn" style="float:right">
-                    <label for="title">Cím: </label>
-                    <input type="text" id="title" name="title" required><br>
-                    <label for="topic">Témakör: </label>
-                    <input type="text" id="topic" name="topic" required><br>
-                    <label for="date">Dátum: </label>
-                    <input type="date" id="date" name="date" required><br>
-                    <button class="btn btn-default" type="submit" id="confirmBtn" name="confirmBtn">Létrehozás</button>
-                </div>
-                <div>
-                    <ul id="collectionList" class="list-group"></ul>
+        <div class="row justify-content-center">
+            <ul id="elementList" class="list-group col-6"></ul>
+        </div>
+        <div class="row justify-content-center">
+            <button id="newElementBtn" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#newElementModal">Új elem</button>
+            <div class="modal fade" id="newElementModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Új elem</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="name">Név: </label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmNewElement">Létrehozás</button>
+                    </div>
+                    </div>
                 </div>
             </div>
-            <div id="elementGrid" class="col-9"></div>
         </div>
     </div>
     <script src="script.js" type="module"></script>

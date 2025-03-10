@@ -4,33 +4,32 @@ export function newElements() {
     setElements(elements);
 }
 
-export function addElement(collection, name) {
+export function addElement(collectionIndex, name) {
     const elements = getElements();
-    elements[collection.id].push({"name":name});
+    elements[collectionIndex].push({"name":name});
     setElements(elements);
 }
 
-export function removeElements(collection) {
+export function removeElements(collectionIndex) {
     const elements = getElements();
-    elements.splice(collection, 1);
-    setElements(elements);
-    clearElements();
-}
-
-export function renameElement(collection, index, name) {
-    const elements = getElements();
-    elements[collection.id][index].name = name;
+    elements.splice(collectionIndex, 1);
     setElements(elements);
 }
 
-export function getElementName(collection, index) {
+export function renameElement(collectionIndex, index, name) {
+    const elements = getElements();
+    elements[collectionIndex][index].name = name;
+    setElements(elements);
+}
+
+export function getElementName(collectionIndex, index) {
     const elements = getElements();    
-    return elements[collection.id][index].name;
+    return elements[collectionIndex][index].name;
 }
 
-export function removeElement(collection, index) {
+export function removeElement(collectionIndex, index) {
     const elements = getElements();
-    elements[collection.id].splice(index, 1);
+    elements[collectionIndex].splice(index, 1);
     setElements(elements);
 }
 
@@ -45,11 +44,6 @@ export function getElements() {
     } else {
         return [];
     }
-}
-
-function clearElements() {
-    const elementGrid = document.getElementById("elementGrid");
-    elementGrid.innerHTML = "";
 }
 
 function setElements(elements) {

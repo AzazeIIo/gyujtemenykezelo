@@ -1,8 +1,8 @@
 import * as elements from "./elements.js";
 
-export function addCollection(title, topic, date) {
+export function addCollection(title, topic, date, file) {
     const collections = getCollections();
-    collections.push({title, topic, date});
+    collections.push({title, topic, date, file});
     setCollections(collections);
     elements.newElements();
 }
