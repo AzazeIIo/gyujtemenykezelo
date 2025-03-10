@@ -69,29 +69,10 @@ function showCollections() {
                     `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right; float:top">
                     <ul id="dropdown" class="dropdown-menu" aria-labelledby="gear">
                         <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
-                        <li>
-                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#removeModal" id="remove" href="#">Törlés</a>
-                            <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Gyűjtemény törlése</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Biztosan törli a gyűjteményt? Ezzel az összes benne lévő elemet is törli.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmRemoval">Törlés</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#removeModal" id="remove" href="#">Törlés</a></li>
                     </ul>`);
                     document.getElementById("rename").onclick = function() {
-                        editCollection(e.target.lastElementChild.lastElementChild, e.target.id);
+                        editCollection(e.target.lastElementChild.firstElementChild, e.target.id);
                     };
                     document.getElementById("confirmRemoval").onclick = function() {
                         collections.removeCollection(target.id);
@@ -107,7 +88,7 @@ function showCollections() {
             }
         }
         card.onclick = function(e) {
-            if(e.target.id != "gear" && (e.target.id != "dropdown" && e.target.parentElement.parentElement.id != "dropdown")) {
+            if(e.target.id != "gear" && e.target.id != "dropdown" && e.target.parentElement.parentElement.id != "dropdown" && e.target.id != "newTitle" && !e.target.classList.contains("btn")) {
                 showElements(card.id);
             }
         }
@@ -126,31 +107,6 @@ function showCollections() {
     newCollectionBtn.setAttribute("data-bs-toggle", "modal");
     newCollectionBtn.setAttribute("data-bs-target", "#newCollectionModal");
     newCollectionCard.appendChild(newCollectionBtn);
-    newCollectionCard.insertAdjacentHTML("beforeEnd", 
-    `<div class="modal fade" id="newCollectionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Új gyűjtemény</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <label for="title">Cím: </label><br>
-                <input type="text" id="title" name="title" required><br>
-                <label for="topic">Témakör: </label><br>
-                <input type="text" id="topic" name="topic" required><br>
-                <label for="date">Dátum: </label><br>
-                <input type="date" id="date" name="date" required><br>
-                <label for="file">Kép: </label><br>
-                <input type="file" id="file" name="file">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmNewCollection">Létrehozás</button>
-            </div>
-            </div>
-        </div>
-    </div>`);
     confirmNewCollection.onclick = function() {
         const titleValue = document.getElementById("title").value;
         const topicValue = document.getElementById("topic").value;
@@ -220,6 +176,7 @@ function editCollection(target, index) {
     let original = collections.getCollectionTitle(index);
     let input = document.createElement("input");
     input.value = original;
+    input.id = "newTitle";
     input.onkeydown = function(e){
         if(e.key === 'Enter') {
             collections.renameCollection(index, input.value);
@@ -258,7 +215,7 @@ $(elementList).on({
                     `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
                     <ul id="dropdown" class="dropdown-menu">
                         <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
-                        <li><a class="dropdown-item" id="move" href="#">Áthelyezés</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#moveElementModal" id="move" href="#">Áthelyezés</a></li>
                         <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
                     </ul>`);
                 document.getElementById("rename").onclick = function() {
@@ -278,12 +235,6 @@ $(elementList).on({
         }
     }
 });
-
-collectionGrid.ondblclick = function(e) {
-    if(e.target && e.target.classList.contains("card-title")) {
-        editCollection(e.target, e.target.parentElement.parentElement.id);
-    }
-}
 
 backBtn.onclick = function() {
     showCollections();
