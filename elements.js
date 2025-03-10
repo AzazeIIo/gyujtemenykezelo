@@ -33,6 +33,13 @@ export function removeElement(collectionIndex, index) {
     setElements(elements);
 }
 
+export function moveElement(from, index, to) {
+    const elements = getElements();
+    elements[from].splice(index, 1);
+    elements[to].push({"name":getElementName(from, index)});
+    setElements(elements);
+}
+
 export function getElements() {
     const getJSON = localStorage.getItem('elements');
     if (getJSON){

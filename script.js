@@ -7,7 +7,11 @@ const elementContainer = document.getElementById("elementContainer");
 const backBtn = document.getElementById("back");
 const collectionTitle = document.getElementById("collectionTitle");
 const confirmNewElement = document.getElementById("confirmNewElement");
+const moveElementModalList = document.getElementById("moveElementModalList");
+const confirmMoveElement = document.getElementById("confirmMoveElement");
 let currentCollection;
+let currentCollectionIndex;
+let currentElementIndex;
 
 window.onload = function() {
     showCollections();
@@ -118,6 +122,7 @@ function showCollections() {
 }
 
 function showElements(collectionId) {
+    currentCollectionIndex = collectionId;
     elementContainer.style.display = "block";
     collectionGrid.style.display = "none";
     collectionTitle.innerText = collections.getCollectionTitle(collectionId);
@@ -130,30 +135,48 @@ function showElements(collectionId) {
         item.innerHTML = element.name;
         elementList.appendChild(item);
     });
-    currentCollection = collectionId;
+    moveElementModalList.innerHTML = "Elem áthelyezése az alábbi gyűjteménybe:<br>";
+    const collectionArray = collections.getCollections();
+    collectionArray.forEach((collection, index) => {
+        moveElementModalList.insertAdjacentHTML("beforeend",
+        `<div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="col${index}">
+            <label class="form-check-label" for="col${index}">${collection.title}</label>
+        </div>`);
+    });
 }
 
 confirmNewElement.onclick = function() {
-    elements.addElement(currentCollection, document.getElementById("name").value);
-    showElements(currentCollection);
+    elements.addElement(currentCollectionIndex, document.getElementById("name").value);
+    showElements(currentCollectionIndex);
+}
+
+confirmMoveElement.onclick = function(e) {
+    const radio = document.getElementsByName("flexRadioDefault");
+    radio.forEach(radioelement => {
+        if(radioelement.checked) {
+            elements.moveElement(currentCollectionIndex, currentElementIndex, radioelement.id.slice(3));
+        }
+    });
+    showElements(currentCollectionIndex);
 }
 
 function editElement(target) {
     if(target) {
         let index = Number(target.id.slice(4));
         
-        let original = elements.getElementName(currentCollection, index);
+        let original = elements.getElementName(currentCollectionIndex, index);
         let input = document.createElement("input");
         input.value = original;
         input.onkeydown = function(ev){
             if(ev.key === 'Enter') {
-                elements.renameElement(currentCollection, index, input.value);
-                showElements(currentCollection);
+                elements.renameElement(currentCollectionIndex, index, input.value);
+                showElements(currentCollectionIndex);
             }
         }
         input.onblur = function(e){
             if(e.relatedTarget == null || e.relatedTarget.id != "renameInput") {
-                showElements(currentCollection);
+                showElements(currentCollectionIndex);
             }
         }
         target.innerText = "";
@@ -165,8 +188,8 @@ function editElement(target) {
         submit.innerText = "Mentés";
         submit.id = "renameInput";
         submit.onclick = function() {
-            elements.renameElement(currentCollection, index, input.value);
-            showElements(currentCollection);
+            elements.renameElement(currentCollectionIndex, index, input.value);
+            showElements(currentCollectionIndex);
         }
         target.appendChild(submit);
     }
@@ -212,18 +235,21 @@ $(elementList).on({
             }
             if(e.relatedTarget != document.getElementById("gear")){
                 document.getElementById(e.target.id).insertAdjacentHTML("beforeEnd",
-                    `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
-                    <ul id="dropdown" class="dropdown-menu">
-                        <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
-                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#moveElementModal" id="move" href="#">Áthelyezés</a></li>
-                        <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
-                    </ul>`);
+                `<img class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" src="images/gear.png" alt="Szerkesztés" id="gear" style="float:right">
+                <ul id="dropdown" class="dropdown-menu">
+                    <li><a class="dropdown-item" id="rename" href="#">Átnevezés</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#moveElementModal" id="move" href="#">Áthelyezés</a></li>
+                    <li><a class="dropdown-item" id="remove" href="#">Törlés</a></li>
+                </ul>`);
                 document.getElementById("rename").onclick = function() {
                     editElement(e.target);
                 };
+                document.getElementById("move").onclick = function() {
+                    currentElementIndex = e.target.id.slice(4);
+                }
                 document.getElementById("remove").onclick = function() {
-                    elements.removeElement(currentCollection, e.target.id.slice(4));
-                    showElements(currentCollection);
+                    elements.removeElement(currentCollectionIndex, e.target.id.slice(4));
+                    showElements(currentCollectionIndex);
                 }
             }
         }
