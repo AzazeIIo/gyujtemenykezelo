@@ -41,10 +41,10 @@ function showCollections() {
         card.className = "card dropdown";
         let cardImage = document.createElement("img");
         cardImage.className = "card-img";
-        if (collection.file === "") {
+        if (collection.image === "") {
             cardImage.src = "/images/photomissing.png";
         } else {
-            cardImage.src = collection.file;
+            cardImage.src = collection.image;
         }
         card.appendChild(cardImage);
         let cardImgOverlay = document.createElement("div");
@@ -115,8 +115,8 @@ function showCollections() {
         const titleValue = document.getElementById("title").value;
         const topicValue = document.getElementById("topic").value;
         const dateValue = document.getElementById("date").value;
-        const fileValue = document.getElementById("file").value;
-        collections.addCollection(titleValue, topicValue, dateValue, fileValue);
+        const imageValue = document.getElementById("image").value;
+        collections.addCollection(titleValue, topicValue, dateValue, imageValue);
         showCollections();
     }
 }
