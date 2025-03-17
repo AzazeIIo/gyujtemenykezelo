@@ -29,7 +29,7 @@ $(window).resize(function() {
 function determineGridSize() {
     windowWidth = $(window).width();
     switch (true) {
-        case windowWidth > 768:
+        case windowWidth > 991:
             collectionsInOneRow = 4;
             columnClass = 3;
             break;
@@ -66,7 +66,7 @@ function showCollections() {
         currentCollection.className = `col-${columnClass} collection`;
         let card = document.createElement("div");
         card.id = index;
-        card.className = "card dropdown";
+        card.className = "card dropdown shadow";
         let cardImage = document.createElement("img");
         cardImage.className = "card-img";
         if (collection.image === "") {
@@ -140,11 +140,11 @@ function showCollections() {
     newCollectionBtn.setAttribute("data-bs-target", "#newCollectionModal");
     newCollectionCard.appendChild(newCollectionBtn);
     confirmNewCollection.onclick = function() {
-        const titleValue = document.getElementById("title").value;
-        const topicValue = document.getElementById("topic").value;
-        const dateValue = document.getElementById("date").value;
-        const imageValue = document.getElementById("image").value;
-        collections.addCollection(titleValue, topicValue, dateValue, imageValue);
+        collections.addCollection($("#title").val(), $("#topic").val(), $("#date").val(), $("#image").val());
+        $("#title").val("");
+        $("#topic").val("");
+        $("#date").val("");
+        $("#image").val("");
         showCollections();
     }
 }
@@ -177,6 +177,7 @@ function showElements(collectionId) {
 
 confirmNewElement.onclick = function() {
     elements.addElement(currentCollectionIndex, document.getElementById("name").value);
+    document.getElementById("name").value = "";
     showElements(currentCollectionIndex);
 }
 

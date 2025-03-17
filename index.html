@@ -12,11 +12,11 @@
         <h1>Gyűjteménykezelő</h1>
     </div>
     <div class="container" id="collectionGrid"></div>
-    <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeCollectionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Gyűjtemény törlése</h1>
+                <h1 class="modal-title fs-5" id="removeCollectionModalLabel">Gyűjtemény törlése</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -29,11 +29,11 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="newCollectionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="newCollectionModal" tabindex="-1" aria-labelledby="newCollectionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Új gyűjtemény</h1>
+                <h1 class="modal-title fs-5" id="newCollectionModalLabel">Új gyűjtemény</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <ul id="elementList" class="list-group col-md-6"></ul>
+            <ul id="elementList" class="list-group col-md-6 shadow"></ul>
             <div class="modal fade" id="moveElementModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -101,6 +101,29 @@
             </div>
         </div>
     </div>
+    <footer>
+        <button id="attributions" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#attributionsModal">
+            Források
+        </button>
+        <div class="modal fade" id="attributionsModal" tabindex="-1" aria-labelledby="attributionsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="attributionsModalLabel">Források</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <a href="https://www.flaticon.com/free-icons/image-comics" title="Image Comics icons">Image Comics icons created by Pop Vectors - Flaticon</a><br>
+                    <a href="https://www.flaticon.com/free-icons/back-arrow" title="back arrow icons">Back arrow icons created by Syahrul Hidayatullah - Flaticon</a><br>
+                    <a href="https://www.flaticon.com/free-icons/gear" title="gear icons">Gear icons created by Freepik - Flaticon</a><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="script.js" type="module"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
