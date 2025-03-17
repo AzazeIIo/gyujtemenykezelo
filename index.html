@@ -8,7 +8,7 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <div class="text-center m-5">
+    <div id="pageTitle" class="text-center">
         <h1>Gyűjteménykezelő</h1>
     </div>
     <div class="container" id="collectionGrid"></div>
@@ -43,7 +43,7 @@
                 <input type="text" id="topic" name="topic" required><br>
                 <label for="date">Dátum: </label><br>
                 <input type="date" id="date" name="date" required><br>
-                <label for="file">Kép: </label><br>
+                <label for="image">Kép linkje: </label><br>
                 <input type="text" id="image" name="image">
             </div>
             <div class="modal-footer">
@@ -55,13 +55,13 @@
     </div>
     <div class="container" id="elementContainer">
         <div class="row justify-content-center">
-            <div class="col-6">
+            <div class="col-md-6">
                 <img src="images/back.png" alt="Vissza" id="back">
                 <h2 id="collectionTitle" class="mb-3"></h2>
             </div>
         </div>
         <div class="row justify-content-center">
-            <ul id="elementList" class="list-group col-6"></ul>
+            <ul id="elementList" class="list-group col-md-6"></ul>
             <div class="modal fade" id="moveElementModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">

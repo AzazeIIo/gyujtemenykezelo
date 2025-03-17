@@ -9,15 +9,43 @@ const collectionTitle = document.getElementById("collectionTitle");
 const confirmNewElement = document.getElementById("confirmNewElement");
 const moveElementModalList = document.getElementById("moveElementModalList");
 const confirmMoveElement = document.getElementById("confirmMoveElement");
-let currentCollection;
 let currentCollectionIndex;
 let currentElementIndex;
+let windowWidth;
+let collectionsInOneRow;
+let columnClass;
+let showingCollections = true;
 
 window.onload = function() {
     showCollections();
 }
 
+$(window).resize(function() {
+    if (showingCollections) {
+        showCollections();
+    }
+});
+
+function determineGridSize() {
+    windowWidth = $(window).width();
+    switch (true) {
+        case windowWidth > 768:
+            collectionsInOneRow = 4;
+            columnClass = 3;
+            break;
+        case windowWidth > 576:
+            collectionsInOneRow = 2;
+            columnClass = 6;
+            break;
+        default:
+            collectionsInOneRow = 1;
+            columnClass = 12;
+    }
+}
+
 function showCollections() {
+    determineGridSize();
+    showingCollections = true;
     collectionGrid.style.display = "block";
     elementContainer.style.display = "none";
     const collectionArray = collections.getCollections();
@@ -29,13 +57,13 @@ function showCollections() {
         collectionGrid.appendChild(currentRow);
     }
     collectionArray.forEach((collection, index) => {
-        if(index % 4 == 0) {
+        if(index % collectionsInOneRow == 0) {
             currentRow = document.createElement("div");
             currentRow.className = "row";
             collectionGrid.appendChild(currentRow);
         }
         let currentCollection = document.createElement("div");
-        currentCollection.className = "col-3 collection";
+        currentCollection.className = `col-${columnClass} collection`;
         let card = document.createElement("div");
         card.id = index;
         card.className = "card dropdown";
@@ -103,7 +131,7 @@ function showCollections() {
         collectionGrid.appendChild(currentRow);
     }
     let newCollectionCard = document.createElement("div");
-    newCollectionCard.className = "col-3 text-center align-content-center newCollection";
+    newCollectionCard.className = `col-${columnClass} text-center align-content-center newCollection`;
     currentRow.appendChild(newCollectionCard);
     let newCollectionBtn = document.createElement("button");
     newCollectionBtn.className = "btn btn-primary mb-3";
@@ -122,6 +150,7 @@ function showCollections() {
 }
 
 function showElements(collectionId) {
+    showingCollections = false;
     currentCollectionIndex = collectionId;
     elementContainer.style.display = "block";
     collectionGrid.style.display = "none";

@@ -37,3 +37,7 @@ h2 {
 #elementContainer {
     display: none;
 }
+
+#pageTitle {
+    margin: 3em 0 3em;
+}
